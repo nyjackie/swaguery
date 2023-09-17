@@ -21,6 +21,8 @@ interface CreateAgentFunction {
 export namespace CreateAgent {
   
   /**
+  * Creates an agent build.
+
    * Response 200: 200 response
    */
   export type Response200 = unknown;

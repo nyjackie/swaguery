@@ -29,6 +29,7 @@ export namespace <%- route.typeName %> {
   for (let { code, type, response } of responseSuccesses) { 
   %>
   /**
+  * <%- route.spec.description %>
    * Response <%- code %>: <%- response.description %>
    */
   export type Response<%- code %> = <%- type %>;

@@ -21,6 +21,8 @@ interface ListAgentsFunction {
 export namespace ListAgents {
   
   /**
+  * Lists all agent builds.
+
    * Response 200: 200 response
    */
   export type Response200 = unknown;

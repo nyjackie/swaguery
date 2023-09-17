@@ -21,6 +21,8 @@ interface DeleteAgentFunction {
 export namespace DeleteAgent {
   
   /**
+  * Deletes an existing agent build.
+
    * Response 202: 202 response
    */
   export type Response202 = unknown;
