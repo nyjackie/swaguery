@@ -1,0 +1,16 @@
+/*****************************************************
+ * Routes
+ */
+const ROUTES = {
+<% for (let route of routes) { %>
+  /**
+   * <%- route.spec.description %>
+   * <% if (route.path.includes('{')) { -%>
+   * <%- route.path %>
+   * <% } -%>
+   */
+  <%- this.h.processName(route.spec.operationId) %>: /^<%- this.h.processPath(route.path) %>$/,
+<% } %>
+};
+
+export default ROUTES;

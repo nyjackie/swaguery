@@ -1,0 +1,12 @@
+/**
+ * Index file for api lib. 
+ */
+
+<% 
+for (let route of routes) { 
+  const typeResponses = this.h.typeResponses(route.spec.responses);
+%>
+export { default as <%- route.spec.operationId %> } from "./<%- route.spec.operationId %>";
+export type { <%- route.typeName %> } from "./<%- route.spec.operationId %>";
+
+<% } %>

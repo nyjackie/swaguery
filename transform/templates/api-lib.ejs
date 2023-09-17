@@ -1,0 +1,76 @@
+import axios, { AxiosRequestConfig } from "axios";
+
+type Headers = Record<string, string>;
+
+<% 
+const params = route.parameters || [];
+const typeParams = this.h.typeParams(params);
+const typeResponses = this.h.typeResponses(route.spec.responses);
+const responseSuccesses = typeResponses.filter(r => r.code >= 200 && r.code < 300)
+  || [ { type: "unknown", code: 200, response: { description: "Success" } } ];
+const responseErrors = typeResponses.filter(r => !(r.code >= 200 && r.code < 300));
+if (!responseErrors.length) {
+  responseErrors.push({ type: "unknown", code: 500, response: { description: "Unknown Error" } });
+}
+const args = this.h.processArgs(params)
+
+%>
+
+/**
+ * <%- this.h.docResponses(route.spec.responses) %>
+ *
+ */
+interface <%- route.typeName %>Function {
+  (<%- typeParams %><%- typeParams.length ? "  " : "" %>): Promise<<%- route.typeName %>.Result>;
+};
+
+export namespace <%- route.typeName %> {
+  <% 
+  for (let { code, type, response } of responseSuccesses) { 
+  %>
+  /**
+   * Response <%- code %>: <%- response.description %>
+   */
+  export type Response<%- code %> = <%- type %>;
+  <% } %>
+  export type Response = <% 
+  for (let { code, type, response } of responseSuccesses) { 
+  %>
+    | Response<%- code %><% } %>;
+
+  <% 
+  for (let { code, type, response } of responseErrors) { 
+  %>
+  /**
+   * Error <%- code %>: <%- response.description %>
+   */
+  type Error<%- code %> = <%- type %>;
+  <% } %>
+  export type Error = <% 
+  for (let { code, type, response } of responseErrors) { 
+  %>  
+    | Error<%- code %><% } %>;
+
+  export type Function = <%- route.typeName %>Function;
+
+  export type Result = <% 
+  for (let { code, type, response } of responseSuccesses) { 
+  %>
+    | Response<%- code %><% } %>;
+}
+
+
+export const <%- route.spec.operationId %>: <%- route.typeName %>.Function = async (<%- args.join(', ') %>) => {
+  const config: AxiosRequestConfig = {
+    url: `<%- this.h.createUrl(route.path) %>`,
+    method: "<%- route.method %>",
+  };
+
+  if (headers) {
+    config.headers = headers;
+  }
+
+  return await axios(config);
+}
+
+export default <%- route.spec.operationId %>;
