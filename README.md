@@ -1,0 +1,1 @@
+generate api endpoints using swagger.
