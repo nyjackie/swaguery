@@ -1,3 +1,1 @@
-generate api functions using swagger yaml file...
-
-I'm not sure it's goingt to be useful lol.
+generate api functions using swagger yaml file.
